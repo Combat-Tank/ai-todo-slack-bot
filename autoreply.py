@@ -28,7 +28,7 @@ def slack_events():
             print(json.dumps(request.json))
             if response["replyBool"]:
                 client.chat_postMessage(
-                    text=response, channel=request.json["event"]["channel"]
+                    text=response["reply"], channel=request.json["event"]["channel"]
                 )
             else:
                 print("No reply needed")
