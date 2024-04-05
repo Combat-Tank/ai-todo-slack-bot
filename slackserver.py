@@ -19,7 +19,7 @@ redirect_uri = "https://l1j4rkm3-3000.euw.devtunnels.ms/slack/oauth_redirect"  #
 
 @app.route("/login", methods=["GET"])
 def login():
-    scopes = "channels:read,chat:write"
+    scopes = "reminders:read,reminders:write"
     encoded_redirect_uri = quote(redirect_uri, safe='')
 
     auth_url = f"https://slack.com/oauth/v2/authorize?client_id={SLACK_CLIENT_ID}&scope={scopes}&redirect_uri={encoded_redirect_uri}"

@@ -15,21 +15,8 @@ Slack Bot using AI for creation of TO-DO lists
 3. When authenticating you are redirected back to a URL. You need to expose your local URL. VSCode has ports for that. (Clarify how to do that without VSCode)
 4. Start `slackserver.py`
 
-### Get a token
+### Try the slack integration
 
-1. You need to have a public accessible URL (I believe)
-   - You can do that in VSCode by going to PORTS and adding a port (for now make it public)
-2. Add your base URL to https://api.slack.com/apps/A06T1HW5UH1/oauth
-3. Go to <http://localhost:3000>
-4. Check the output in the terminal for the access token
-
-### Send a message
-
-You can use the `/slack/message` endpoint e.g. via curl if you store the token in the bash var `TOKEN`
-
-```sh
-curl -X POST http://localhost:3000/slack/message \
-    -H "Authorization: Bearer $TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{"channel":"C06SYHHSDEH", "message":"Dude Slackoff! :wink:"}'
-```
+1. Go to: https://api.slack.com/apps/A06T2BX7HTM/oauth
+2. Copy the xoxp token
+3. Put it into a local bash var `export TOKEN="..."`
