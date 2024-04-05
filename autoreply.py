@@ -30,6 +30,8 @@ def slack_events():
                 client.chat_postMessage(
                     text=response, channel=request.json["event"]["channel"]
                 )
+            else:
+                print("No reply needed")
         except SlackApiError as e:
             print(f"Error fetching messages: {e}")
 
