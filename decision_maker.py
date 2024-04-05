@@ -59,7 +59,8 @@ def decideEmoji(message, model):
 def autoReply(message, formality, model):
     # Generate the most basic autoreply reply
     prompt = f""" Given the following message, generate a reply in a {formality} and is appropriate for the context and content of the message.
-    Consider factors such as language, tone, and context. 
+    Consider factors such as language, tone, and context.
+    Only provide the reply text, do not include any additional information or context.
     
     Here is the message:
     {message}
@@ -118,7 +119,7 @@ def main():
     ]
 
     for message in messages:
-        decisionFlow(message, model)
+        decisionFlowDebug(message, model)
 
 
 if __name__ == "__main__":
