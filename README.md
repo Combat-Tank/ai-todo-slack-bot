@@ -26,3 +26,4 @@ Slack Bot using AI for creation of TO-DO lists
       - `message.groups`
       - `message.im`
       - `message.mpim`
+5. Run it `python autoreply.py`
