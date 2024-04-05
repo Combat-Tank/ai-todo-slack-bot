@@ -50,7 +50,7 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
 
 def get_all_messages_for_user(user):
     select_stmt = sqlalchemy.text(
-        f"SELECT text FROM public.messages WHERE receiver={user} SORT BY priority, timestamp LIMIT 1000;",
+        f"SELECT text FROM public.messages WHERE receiver='{user}' ORDER BY priority, timestamp LIMIT 1000;",
     )
 
     with connect_with_connector().connect() as db_conn:

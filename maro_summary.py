@@ -21,7 +21,7 @@ def create_summary():
     messages = get_all_messages_for_user('receiver name')
     context = ""
     for message in messages:
-        context += message + "\n"
+        context += message.text + "\n"
         if len(context) > 5000:
             break
 
@@ -58,4 +58,4 @@ def create_summary():
 # except SlackApiError as e:
 #     print(f"Error fetching messages: {e}")
 #
-
+print(create_summary())
