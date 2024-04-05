@@ -1,6 +1,6 @@
-from pydantic import BaseModel
 from langchain_google_vertexai import VertexAI
 
+from Message import Message
 from sqlloader import get_all_messages_for_user, save_message_for_user
 
 # Message model
@@ -52,12 +52,9 @@ def create_summary():
 # except SlackApiError as e:
 #     print(f"Error fetching messages: {e}")
 #
-print(create_summary())
+if __name__=="__main__":
+    print(create_summary())
 
-class Message(BaseModel):
-    user: str
-    ts: str
-    text: str
-    priority: int
 def save_message_for_summary(message: Message):
     save_message_for_user(message, "receiver name")
+    print('success')

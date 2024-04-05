@@ -5,7 +5,7 @@ import pg8000
 
 import sqlalchemy
 
-from maro_summary import Message
+from Message import Message
 
 
 def connect_with_connector() -> sqlalchemy.engine.base.Engine:

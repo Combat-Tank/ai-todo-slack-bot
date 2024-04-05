@@ -5,8 +5,8 @@ from slack_sdk.errors import SlackApiError
 from langchain_google_vertexai import VertexAI
 import os
 import json
-
-from maro_summary import save_message_for_summary, Message
+from Message import Message
+from maro_summary import save_message_for_summary
 
 app = Flask(__name__)
 
