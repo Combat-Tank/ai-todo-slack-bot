@@ -41,6 +41,7 @@ def slack_events():
 
             if reaction["emojiReply"]:
                 client.reactions_add(
+                    channel=request.json["event"]["channel"],
                     name=reaction["emoji"],
                     timestamp=request.json["event"]["ts"],
                 )
