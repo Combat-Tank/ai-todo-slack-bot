@@ -18,6 +18,7 @@ client = WebClient(token=SLACK_TOKEN)
 # identity = client.users_identity()
 # userid = identity["user"]["id"]
 
+
 @app.route("/slack/events", methods=["POST"])
 def slack_events():
     # Slack sends a challenge request to verify the endpoint
@@ -29,32 +30,38 @@ def slack_events():
         #     print("ignoring your own message")
         #     return
         response = decision_maker.autoReply(request.json["event"]["text"], model)
+        reaction = decision_maker.autoReact(request.json["event"]["text"], model)
         try:
             if response["replyBool"]:
                 client.chat_postMessage(
                     text=response["reply"], channel=request.json["event"]["channel"]
                 )
             else:
-                client.reactions_add(channel=request.json["event"]["channel"], name="thumbsup", timestamp=request.json["event"]["ts"])
+                print("No reply")
+
+            if response["emojiReply"]:
+                client.reactions_add(
+                    name=reaction["emoji"],
+                    timestamp=request.json["event"]["ts"],
+                )
+            else:
+                print("No emoji")
         except SlackApiError as e:
             print(f"Error fetching messages: {e}")
 
         message = Message(
-                user=request.json["event"]["user"],
-                ts=request.json["event"]["ts"],
-                text=request.json["event"]["text"],
-                priority=1,
-            )
+            user=request.json["event"]["user"],
+            ts=request.json["event"]["ts"],
+            text=request.json["event"]["text"],
+            priority=1,
+        )
         save_message_for_summary(message)
         if decideToDo(message) == "yes":
             todoText = createToDoText(message)
             todoTime = createToDoTime(message)
             try:
-                response = client.reminders_add(
-                    text=todoText,
-                    time=todoTime
-                )
-                print("Reminder created:", response['reminder']['id'])
+                response = client.reminders_add(text=todoText, time=todoTime)
+                print("Reminder created:", response["reminder"]["id"])
             except SlackApiError as e:
                 print(f"Error creating reminder: {e}")
 

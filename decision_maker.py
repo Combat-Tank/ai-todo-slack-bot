@@ -55,7 +55,7 @@ def decideEmoji(message, model):
     # Map emoji to business actions
     # prompt = f"""Please define how emojis are typically used in a work environment for software engineering in Slack. Provide descriptions and their corresponding Slack emoji codes.
     # For example, you can enter "read message" for :t+1:, "Approved Branch" or "Approved plan"for :white_check_mark:, if the message is about a bug, react with a bug emoji, etc.
-    emojis = [":+1:", ":-1:", ":smile:", ":bug:", ":white_check_mark:"]
+    emojis = [":thumbsUp:", ":thumbsDown:", ":smile:", ":bug:", ":white_check_mark:"]
     str_emojis = ", ".join(emojis)
     prompt = f"""Select an emoji from this list {str_emojis} to reply to the following message:
     Provide only a single emoji code as a response.
