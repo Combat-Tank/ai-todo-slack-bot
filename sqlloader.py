@@ -47,15 +47,15 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
     )
     return pool
 
-# insert statement
-select_stmt = sqlalchemy.text(
-    "SELECT * FROM public.messages LIMIT 1000;",
-)
 
-with connect_with_connector().connect() as db_conn:
-    # query database
-    result = db_conn.execute(select_stmt)
+def get_all_messages_for_user(user):
+    select_stmt = sqlalchemy.text(
+        f"SELECT text FROM public.messages WHERE receiver={user} SORT BY priority, timestamp LIMIT 1000;",
+    )
 
-    # Do something with the results
-    for row in result:
-        print(row)
+    with connect_with_connector().connect() as db_conn:
+        # query database
+        result = db_conn.execute(select_stmt)
+
+        # Do something with the results
+        return result
