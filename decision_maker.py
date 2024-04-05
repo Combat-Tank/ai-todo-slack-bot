@@ -113,15 +113,19 @@ def decisionFlowDebug(message, model):
 
 def autoReact(message, model):
     aux = BinaryResponseToBool(decideAutoEmojiReaction(message, model))
+    response = None
 
     if aux:
-        return decideEmoji(message, model)
+        response = decideEmoji(message, model)
+
+    return {"emojiReply": aux, "emoji": response}
 
 
 def autoReply(message, model):
 
     aux = decideAutoReply(message, model)
     print(aux)
+    response = None
     reply = BinaryResponseToBool(aux)
     # Decide whether to reply
     if reply:
