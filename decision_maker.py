@@ -63,7 +63,10 @@ def decideEmoji(message, model):
     {message}
 
     """
-    res = model.invoke(prompt)
+    try:
+        res = model.invoke(prompt)
+    except Exception as e:
+        print(e)
     return res
 
 
@@ -108,6 +111,13 @@ def decisionFlowDebug(message, model):
         print("--------------------------\n")
 
 
+def autoReact(message, model):
+    aux = BinaryResponseToBool(decideAutoEmojiReaction(message, model))
+
+    if aux:
+        return decideEmoji(message, model)
+
+
 def autoReply(message, model):
 
     aux = decideAutoReply(message, model)
@@ -117,7 +127,8 @@ def autoReply(message, model):
     if reply:
         # Decide whether to use a formal tone
         formality = decideMessageFormality(message, model)
-        return generateReply(message, formality, model)
+        response = generateReply(message, formality, model)
+    return {"replyBool": reply, "reply": response}
 
 
 def main():
