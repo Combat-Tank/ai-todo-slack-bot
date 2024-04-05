@@ -20,3 +20,9 @@ Slack Bot using AI for creation of TO-DO lists
 1. Go to: https://api.slack.com/apps/A06T2BX7HTM/oauth
 2. Copy the xoxp token
 3. Put it into a local bash var `export TOKEN="..."`
+4. Set up the events here: https://api.slack.com/apps/A06T2BX7HTM/event-subscriptions?
+   - You need to enable events for the user under *"Subscribe to events on behalf of users"*
+      - `message.channels`
+      - `message.groups`
+      - `message.im`
+      - `message.mpim`
