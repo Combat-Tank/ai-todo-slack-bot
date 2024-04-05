@@ -94,7 +94,7 @@ def decisionFlowDebug(message, model):
         print("--------------------------\n")
 
 
-def reply(message, model):
+def autoReply(message, model):
 
     aux = decideAutoReply(message, model)
     print(aux)
