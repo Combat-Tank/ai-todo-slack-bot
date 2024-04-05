@@ -5,6 +5,8 @@ import pg8000
 
 import sqlalchemy
 
+from maro_summary import Message
+
 
 def connect_with_connector() -> sqlalchemy.engine.base.Engine:
     """
@@ -59,3 +61,13 @@ def get_all_messages_for_user(user):
 
         # Do something with the results
         return result
+
+def save_message_for_user(message: Message, user: str):
+    insert_stmt = sqlalchemy.text(
+        f"INSERT INTO public.messages (text, timestamp, priority, receiver, sender) VALUES ('{message.text}', TIMESTAMP('{message.ts})', {message.priority}, '{user}', '{message.user}');",
+    )
+
+    with connect_with_connector().connect() as db_conn:
+        # query database
+        db_conn.execute(insert_stmt)
+        db_conn.commit()

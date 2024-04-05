@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from langchain_google_vertexai import VertexAI
 
-from sqlloader import get_all_messages_for_user
+from sqlloader import get_all_messages_for_user, save_message_for_user
 
 # Message model
 # text: The plain text content of the message.
@@ -10,12 +10,6 @@ from sqlloader import get_all_messages_for_user
 # attachments: A list of attachment objects (if any).
 
 model = VertexAI(model_name="gemini-pro")
-
-class Message(BaseModel):
-    user: str
-    type: str
-    ts: str
-    text: str
 
 def create_summary():
     messages = get_all_messages_for_user('receiver name')
@@ -59,3 +53,11 @@ def create_summary():
 #     print(f"Error fetching messages: {e}")
 #
 print(create_summary())
+
+class Message(BaseModel):
+    user: str
+    ts: str
+    text: str
+    priority: int
+def save_message_for_summary(message: Message):
+    save_message_for_user(message, "receiver name")
