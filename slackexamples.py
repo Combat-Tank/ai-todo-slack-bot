@@ -10,7 +10,7 @@ channel_id = "C06SYHHSDEH"
 
 try:
     # Fetch recent messages from a channel
-    response = client.chat_postMessage(channel=channel_id, text="Hey everyone!")
+    response = client.chat_postMessage(channel=channel_id, text="Jorge says Hello!")
 
     # Process messages (this is a simplified example)
     print("Message sent")
@@ -31,8 +31,8 @@ except SlackApiError as e:
 
 try:
     response = client.reminders_add(
-        text="Reminder text",
-        time="in 10 minutes"  # Or a specific time/date
+        text="Win!!",
+        time="in 10 minutes"
     )
     print("Reminder created:", response['reminder']['id'])
 except SlackApiError as e:

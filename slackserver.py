@@ -78,6 +78,9 @@ def slack_events():
             "challenge": request.json["challenge"]
         })
 
+    else:
+        print(request.json)
+
     # Your code to handle incoming events goes here
 
     return "OK", 200
