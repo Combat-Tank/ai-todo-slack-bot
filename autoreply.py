@@ -10,7 +10,7 @@ from maro_summary import save_message_for_summary
 
 app = Flask(__name__)
 
-SLACK_TOKEN = os.getenv('TOKEN')
+SLACK_TOKEN = os.getenv("TOKEN")
 
 model = VertexAI(model_name="gemini-pro")
 client = WebClient(token=SLACK_TOKEN)
@@ -20,24 +20,27 @@ client = WebClient(token=SLACK_TOKEN)
 def slack_events():
     # Slack sends a challenge request to verify the endpoint
     if "challenge" in request.json:
-        return jsonify({
-            "challenge": request.json["challenge"]
-        })
+        return jsonify({"challenge": request.json["challenge"]})
 
     elif "event" in request.json:
         response = decision_maker.autoReply(request.json["event"]["text"], model)
         try:
             print(json.dumps(request.json))
-            client.chat_postMessage(text=response, channel=request.json["event"]["channel"])
+            if response["replyBool"]:
+                client.chat_postMessage(
+                    text=response, channel=request.json["event"]["channel"]
+                )
         except SlackApiError as e:
             print(f"Error fetching messages: {e}")
 
-        save_message_for_summary(Message(
-            user=request.json["event"]["user"],
-            ts=request.json["event"]["ts"],
-            text=request.json["event"]["text"],
-            priority=1
-        ))
+        save_message_for_summary(
+            Message(
+                user=request.json["event"]["user"],
+                ts=request.json["event"]["ts"],
+                text=request.json["event"]["text"],
+                priority=1,
+            )
+        )
 
     # Your code to handle incoming events goes here
 
