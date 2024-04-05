@@ -52,7 +52,7 @@ def connect_with_connector() -> sqlalchemy.engine.base.Engine:
 
 def get_all_messages_for_user(user):
     select_stmt = sqlalchemy.text(
-        f"SELECT text FROM public.messages WHERE receiver='{user}' ORDER BY priority, timestamp LIMIT 1000;",
+        f"SELECT text FROM public.messages WHERE receiver='{user}' ORDER BY priority, ts LIMIT 1000;",
     )
 
     with connect_with_connector().connect() as db_conn:
@@ -64,7 +64,7 @@ def get_all_messages_for_user(user):
 
 def save_message_for_user(message: Message, user: str):
     insert_stmt = sqlalchemy.text(
-        f"INSERT INTO public.messages (text, timestamp, priority, receiver, sender) VALUES ('{message.text}', TIMESTAMP('{message.ts})', {message.priority}, '{user}', '{message.user}');",
+        f"INSERT INTO public.messages (text, timestamp, priority, receiver, sender) VALUES ('{message.text}', '{message.ts}', {message.priority}, '{user}', '{message.user}');",
     )
 
     with connect_with_connector().connect() as db_conn:
