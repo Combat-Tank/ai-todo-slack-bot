@@ -39,7 +39,7 @@ def slack_events():
             else:
                 print("No reply")
 
-            if response["emojiReply"]:
+            if reaction["emojiReply"]:
                 client.reactions_add(
                     name=reaction["emoji"],
                     timestamp=request.json["event"]["ts"],
