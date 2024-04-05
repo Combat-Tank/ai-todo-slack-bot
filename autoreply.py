@@ -6,6 +6,7 @@ from langchain_google_vertexai import VertexAI
 import os
 import json
 from Message import Message
+from ToDo import decideToDo, createToDoText, createToDoTime
 from maro_summary import save_message_for_summary
 
 app = Flask(__name__)
@@ -35,14 +36,24 @@ def slack_events():
         except SlackApiError as e:
             print(f"Error fetching messages: {e}")
 
-        save_message_for_summary(
-            Message(
+        message = Message(
                 user=request.json["event"]["user"],
                 ts=request.json["event"]["ts"],
                 text=request.json["event"]["text"],
                 priority=1,
             )
-        )
+        save_message_for_summary(message)
+        if decideToDo(message) == "yes":
+            todoText = createToDoText(message)
+            todoTime = createToDoTime(message)
+            try:
+                response = client.reminders_add(
+                    text=todoText,
+                    time=todoTime
+                )
+                print("Reminder created:", response['reminder']['id'])
+            except SlackApiError as e:
+                print(f"Error creating reminder: {e}")
 
     # Your code to handle incoming events goes here
 

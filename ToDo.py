@@ -2,14 +2,9 @@ from pydantic import BaseModel
 from langchain_google_vertexai import VertexAI
 import time
 
+from Message import Message
 
-class SlackMessage(BaseModel):
-    user_id: str
-    ts: str
-    text: str
-
-
-def decideToDo(message: SlackMessage):
+def decideToDo(message: Message):
     model = VertexAI(model_name="gemini-pro")
     res = model.invoke(f'''"Using natural language processing, determine if the following message contains a task that can be interpreted as a to-do item:
 
@@ -21,7 +16,7 @@ Provide a binary response: yes or no."''')
     return res
 
 
-def createToDoText(message: SlackMessage):
+def createToDoText(message: Message):
     model = VertexAI(model_name="gemini-pro")
     res = model.invoke(
         f'''Using natural language processing, determine what task the following message from {message.user_id} contains for me:
@@ -34,7 +29,7 @@ Provide only a to-do item as response:''')
     return res
 
 
-def createToDoTime(message: SlackMessage):
+def createToDoTime(message: Message):
     model = VertexAI(model_name="gemini-pro")
     res = model.invoke(f'''Using natural language processing, classify how urgent the task from the following message is for me:
 
@@ -44,9 +39,9 @@ def createToDoTime(message: SlackMessage):
 
 The classes are "urgent", "neutral" and "not urgent".
 Respond with the class name. By default reply with "neutral"''')
-    return res
-
-
-message = SlackMessage(text="Bring me flowers. Be fast.", user_id="Nils", ts=str(time.time()))
-
-print(createToDoTime(message))
+    if res == "urgent":
+        return "in 1 hour"
+    elif res == "neutral":
+        return "in 1 day"
+    elif res == "not urgent":
+        return "in 1 week"
