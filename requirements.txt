@@ -47,7 +47,6 @@ humanfriendly==10.0
 idna==3.6
 importlib-metadata==7.0.0
 importlib_resources==6.4.0
-itsdangerous==2.1.2
 Jinja2==3.1.3
 joblib==1.3.2
 jsonpatch==1.33
@@ -141,3 +140,6 @@ Werkzeug==3.0.2
 wrapt==1.16.0
 yarl==1.9.4
 zipp==3.18.1
+cloud-sql-python-connector[pg8000]
+sqlalchemy
+pg8000
