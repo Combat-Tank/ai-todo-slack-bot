@@ -10,6 +10,7 @@
 ### Auto Reaction
 
 - Give the LLM 5 emojis and let it decide what to respond
+- Auto generate a meme for a reply
 
 ### Decision
 
