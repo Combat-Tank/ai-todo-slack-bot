@@ -15,7 +15,8 @@ SLACK_TOKEN = os.getenv("TOKEN")
 
 model = VertexAI(model_name="gemini-pro")
 client = WebClient(token=SLACK_TOKEN)
-
+# identity = client.users_identity()
+# userid = identity["user"]["id"]
 
 @app.route("/slack/events", methods=["POST"])
 def slack_events():
@@ -24,15 +25,17 @@ def slack_events():
         return jsonify({"challenge": request.json["challenge"]})
 
     elif "event" in request.json:
+        # if request.json["event"]["user"] == userid:
+        #     print("ignoring your own message")
+        #     return
         response = decision_maker.autoReply(request.json["event"]["text"], model)
         try:
-            print(json.dumps(request.json))
             if response["replyBool"]:
                 client.chat_postMessage(
                     text=response["reply"], channel=request.json["event"]["channel"]
                 )
             else:
-                print("No reply needed")
+                client.reactions_add(channel=request.json["event"]["channel"], name="thumbsup", timestamp=request.json["event"]["ts"])
         except SlackApiError as e:
             print(f"Error fetching messages: {e}")
 
