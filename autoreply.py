@@ -12,6 +12,7 @@ from maro_summary import save_message_for_summary
 app = Flask(__name__)
 
 SLACK_TOKEN = os.getenv("TOKEN")
+OWN_USER_ID = os.getenv("USER")
 
 model = VertexAI(model_name="gemini-pro")
 client = WebClient(token=SLACK_TOKEN)
@@ -26,9 +27,10 @@ def slack_events():
         return jsonify({"challenge": request.json["challenge"]})
 
     elif "event" in request.json:
-        # if request.json["event"]["user"] == userid:
-        #     print("ignoring your own message")
-        #     return
+        print(request.json["event"]["user"])
+        if request.json["event"]["user"] == OWN_USER_ID:
+            print("ignoring your own message")
+            return
         response = decision_maker.autoReply(request.json["event"]["text"], model)
         reaction = decision_maker.autoReact(request.json["event"]["text"], model)
         try:
